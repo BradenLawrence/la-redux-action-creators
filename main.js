@@ -49,6 +49,12 @@ const createNextId = () => {
 const ADD_BOOK = 'ADD_BOOK'
 
 // Submits form and dispatches add action
+const addBookToList = (newBook) => {
+  return {
+    type: ADD_BOOK,
+    newBook: newBook
+  }
+}
 
 newBookForm.addEventListener('submit', () => {
   event.preventDefault();
@@ -56,13 +62,12 @@ newBookForm.addEventListener('submit', () => {
   const bookAuthor = document.getElementById('book-author').value
   document.getElementById('book-title').value = ''
   document.getElementById('book-author').value = ''
-  const newBook = { id: createNextId(), title: bookTitle, author: bookAuthor }
-  store.dispatch(
-    {
-      type: ADD_BOOK,
-      newBook: newBook
-    }
-  )
+  const newBook = {
+    id: createNextId(),
+    title: bookTitle,
+    author: bookAuthor
+  }
+  store.dispatch(addBookToList(newBook))
 })
 
 // JS to delete books
@@ -73,14 +78,17 @@ const deleteButtons = document.getElementsByClassName('delete-button')
 const DELETE_BOOK = 'DELETE_BOOK'
 
 // Adds click listener to dispatch delete action
+const deleteBook = (deletedBookId) => {
+  return {
+    type: DELETE_BOOK,
+    deletedBookId: deletedBookId
+  }
+}
 
 const addDeleteListeners = () => {
   Array.from(deleteButtons).forEach(deleteButton => {
     deleteButton.addEventListener('click', function() {
-      store.dispatch({
-        type: DELETE_BOOK,
-        deletedBookId: deleteButton.id
-      })
+      store.dispatch(deleteBook(deleteButton.id))
     })
   })
 }
